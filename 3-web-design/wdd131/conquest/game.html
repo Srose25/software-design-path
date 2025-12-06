@@ -4,27 +4,29 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Conquest! - Game</title>
-        <!--Styles-->
+        <link rel="stylesheet" href="styles/conquest.css">
     </head>
 
     <body>
-        <header class="game-header">
-            <div class="logo">
-                <h1>CONQUEST!</h1>
-            </div>
-
+        <header class="site-header">
+        
+            <img src="assets/images/siteplan/logo.JPG" alt="Conquest Logo" class="site-logo">
+        
+            <h1 class="site-title">CONQUEST!</h1>
+        
             <nav class="main-nav" aria-label="Main Navigation">
                 <ul>
                     <li><a href="home.html">Home</a></li>
                     <li><a href="settings.html">Settings</a></li>
-                    <!--Leaderboard Later-->
                 </ul>
             </nav>
-
-            <button id="reset-button">Reset<br>Game</button>
+        
+            <button id="reset-button" class="reset-btn">Reset<br>Game</button>
+        
         </header>
 
-        <main class="game-grid">
+
+        <main class="game-content">
             <aside class="games-nav" aria-label="Other Games">
                 <nav>
                     <ul>
@@ -34,6 +36,7 @@
             </aside>
 
             <section class="game-area">
+                <h2 class="sr-only">Game Area</h2>
                 <div class="game-wrapper">
                     <canvas id="gameCanvas" width="800" height="600">
                         filler text
