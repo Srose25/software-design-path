@@ -248,7 +248,7 @@ p, li, a, label {
     align-items: flex-start;
 }
 
-.info-toggle {
+#infoToggle {
     background: var(--secondary-color);
     color: var(--accent2-color);
     border: none;
@@ -258,22 +258,26 @@ p, li, a, label {
     font-weight: bold;
 }
 
-.info-toggle:hover {
+#infoToggle:hover {
     background: var(--primary-color);
     color: var(--accent1-color);
 }
 
 #infoPanel {
-    background: var(--accent1-color);
+    display: none;
+    background: var(--secondary-color);
     color: var(--accent2-color);
     padding: 1em;
     border-radius: 10px;
     max-width: 240px;
 }
 
-#infoPanel.show {
-    display: block
+#infoPanel p {
+    color: var(--accent2-color);
+    padding: 4px;
 }
+
+
 
 /*Footer*/
 footer {
