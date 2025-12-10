@@ -271,6 +271,10 @@ p, li, a, label {
     max-width: 240px;
 }
 
+#infoPanel.show {
+    display: block
+}
+
 /*Footer*/
 footer {
     display: grid;
