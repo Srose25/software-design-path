@@ -14,16 +14,10 @@ html, body {
     height: 100%;
 }
 
-body {
-    font-family: var(--paragraph-font);
-    color: var(--paragraph-color-on-white);
-    background-color: #fff;
-    line-height: 1.5;
-}
-
 
 /*Root*/
 :root {
+  --main-background-color: #ffffff;
   --primary-color: #91d6a8;
   --secondary-color: #0d7575;
   --accent1-color: #022122;
@@ -34,9 +28,9 @@ body {
 
   /* Text Color Rules */
   --headline-color-on-white: var(--secondary-color);
-  --headline-color-on-color: #dbf9f0;
+  --headline-color-on-color: var(--accent2-color);
   --paragraph-color-on-white: var(--accent1-color);
-  --paragraph-color-on-color: #dbf9f0;
+  --paragraph-color-on-color: var(--accent2-color);
 
   /* Navigation Colors */
   --nav-link-color: var(--accent2-color);
@@ -47,6 +41,13 @@ body {
 
 
 /*Global*/
+body {
+    background-color: var(--main-background-color);
+    color: var(--paragraph-color-on-white);
+    font-family: var(--paragraph-font);
+    line-height: 1.5;
+}
+
 h1, h2, h3, h4 {
     font-family: var(--heading-font);
     color: var(--headline-color-on-white);
@@ -124,14 +125,14 @@ p, li, a, label {
 
 .home-content h2 {
     font-size: 2.5em;
-    color: var(--headline-color-on-white);
+    color: var(--accent1-color);
     margin-top: 2em;
     margin-bottom: 1em;
 }
 
 .home-content p {
     font-size: 1.5em;
-    color: var(--headline-color-on-white);
+    color: var(--accent1-color);
     margin-bottom: 2em;
 }
 
@@ -338,7 +339,7 @@ footer {
 }
 
 .setting-item {
-    background-color: var(--accent1-color);
+    background-color: var(--secondary-color);
     color: var(--accent2-color);
     padding: 1.2em 1.5em;
     border-radius: 12px;
