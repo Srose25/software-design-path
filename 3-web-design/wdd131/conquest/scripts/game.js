@@ -37,8 +37,22 @@ const gameCtx = canvas.getContext("2d");
 startBackgroundAnimation(gameCtx, canvas.width, canvas.height);
 
 //Full Screen
-const fullscreen = document.getElementById("fullscreen");
+const fullscreenBtn = document.getElementById("fullscreen");
+const exitBtn = document.getElementById("exitFullscreen");
 
-fullscreen.addEventListener("click", () => {
-    document.body.classList.toggle("fullscreen-active");
+fullscreenBtn.addEventListener("click", () => {
+    document.body.classList.add("fullscreen-active");
+    startGame(); //full screen will also automatically start the game
 });
+
+exitBtn.addEventListener("click", () => {
+    document.body.classList.remove("fullscreen-active");
+});
+
+// Allow ESC to exit full screen mode
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+        document.body.classList.remove("fullscreen-active");
+    }
+});
+

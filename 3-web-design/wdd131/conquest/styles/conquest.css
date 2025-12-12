@@ -268,20 +268,76 @@ p, li, a, label {
 }
 
 /*Full Screen Mode*/
-body.fullscreen-active .site-content {
-    filter: blur(8px) brightness(0.5);
-    pointer-events: none;
+.fullscreen-btn,
+.exit-btn {
+    position: absolute;
+    z-index: 500;
+    padding: 0.5em 1em;
+    background: var(--primary-color);
+    border: none;
+    color: var(--accent1-color);
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 6px;
 }
 
-body.fullscreen-active canvas {
+.exit-btn {
+    z-index: 1000;
+}
+
+/* Full Screen Button (normal mode) */
+.fullscreen-btn {
+    bottom: 20px;
+    right: 20px;
+}
+
+/* Fullscreen overlay (dark background behind game) */
+#fullscreen-overlay {
+    display: none;
+}
+
+body.fullscreen-active #fullscreen-overlay {
+    display: block;
     position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 900; /* below canvas, above page */
+}
+
+/* Canvas positioned in fullscreen */
+body.fullscreen-active canvas {
+    position: fixed !important;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 90vw;
-    height: 90vh;
-    z-index: 200;
+    width: 90vw !important;
+    height: 90vh !important;
+    z-index: 1000 !important;
+    border: 4px solid var(--primary-color);
 }
+
+/* Exit button shown only in fullscreen */
+#exitFullscreen {
+    display: none;
+}
+
+body.fullscreen-active #exitFullscreen {
+    display: block;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 16px;
+    z-index: 1100;
+}
+
+/* Important: DO NOT blur the page container */
+body.fullscreen-active .site-content {
+    pointer-events: none;
+    user-select: none;
+}
+
+
+
 
 /*Info Blurb*/
 .game-info {
