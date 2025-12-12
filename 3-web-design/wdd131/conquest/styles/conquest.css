@@ -188,7 +188,7 @@ p, li, a, label {
 .games-nav a {
     display: block;
     padding: 1em;
-    background: var(--accent1-color);
+    background: var(--secondary-color);
     color: var(--accent2-color);
     text-decoration: none;
     text-align: center;
@@ -196,7 +196,8 @@ p, li, a, label {
 }
 
 .games-nav a:hover {
-    background: var(--secondary-color);
+    background: var(--primary-color);
+    color: var(--accent1-color);
 }
 
 /*THE GAME*/
@@ -230,8 +231,8 @@ p, li, a, label {
 #fullscreen {
     margin-top: 1rem;
     padding: 0.50rem .8rem;
-    background: var(--primary-color);
-    color: var(--accent1-color);
+    background: var(--secondary-color);
+    color: var(--accent2-color);
     border: none;
     border-radius: 10px;
     font-weight: bold;
@@ -239,8 +240,8 @@ p, li, a, label {
 }
 
 #fullscreen:hover {
-    background: var(--secondary-color);
-    color: white;
+    background: var(--primary-color);
+    color: var(--accent1-color);
 }
 
 /*Play Now Text*/
