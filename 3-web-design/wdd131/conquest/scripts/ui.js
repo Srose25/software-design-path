@@ -1,3 +1,5 @@
+//THEMES
+
 import THEMES from "./objects.mjs";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -38,3 +40,4 @@ function applyTheme(themeName) {
 }
 
 
+//GAME SETTINGS
