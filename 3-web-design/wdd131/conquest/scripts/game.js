@@ -29,8 +29,8 @@ overlay.addEventListener("click", () => {
 import { startBackgroundAnimation } from "./game-bg.js";
 
 const canvas = document.getElementById("gameCanvas");
-canvas.width = 800;
-canvas.height = 600;
+canvas.width = 710;
+canvas.height = 510;
 
 const gameCtx = canvas.getContext("2d");
 

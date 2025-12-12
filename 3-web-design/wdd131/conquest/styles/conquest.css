@@ -217,8 +217,8 @@ p, li, a, label {
     border: 4px solid var(--secondary-color);
     border-radius: 10px;
     background-color: black;
-    width: 650px;
-    height:450px;
+    width: 710px;
+    height:510px;
 }
 
 .instructions {
@@ -274,12 +274,17 @@ p, li, a, label {
     position: absolute;
     z-index: 500;
     padding: 0.5em 1em;
-    background: var(--primary-color);
     border: none;
-    color: var(--accent1-color);
+    background: var(--secondary-color);
+    color: var(--accent2-color);
     font-size: 1rem;
     cursor: pointer;
     border-radius: 6px;
+}
+
+.exit-btn:hover {
+    background: var(--primary-color);
+    color: var(--accent1-color);
 }
 
 .exit-btn {
