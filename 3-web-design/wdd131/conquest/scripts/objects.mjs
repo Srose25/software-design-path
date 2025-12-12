@@ -68,7 +68,8 @@ const DIFFICULTY = {
 const SOUNDS = {
     music: {
         cosmically: "assets/sounds/cosmically.mp3",
-        conquest: "assets/sounds/CONQUEST.mp3"
+        conquest: "assets/sounds/CONQUEST.mp3",
+        beyond: "assets/sounds/beyond.mp3"
     },
     sfx: {
         fire: "assets/sounds/fire.mp3",
@@ -110,6 +111,14 @@ const THEMES = {
   }
 };
 
+
+export const gameState = {
+    player: null,
+    asteroids: [],
+    shots: [],
+    score: 0,
+    running: true,
+};
 
 export {
     SHIP_STATS,
