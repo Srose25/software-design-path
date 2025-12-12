@@ -38,6 +38,10 @@
             <section class="game-area">
                 <h2 class="sr-only">CONQUEST! - Play Now!</h2>
                 <div class="game-wrapper">
+                    <div id="gameOverlay" class="overlay">
+                        <h3 class="play-text">PLAY NOW</h1>
+                    </div>
+
                     <canvas id="gameCanvas" width="800" height="600">
                         filler text
                     </canvas>
@@ -47,7 +51,7 @@
                         <p>LMB to Fire!</p>
                     </div>
 
-                    <button id="fullscreen">
+                    <button id="fullscreen" class="btn">
                         Full<br>Screen
                     </button>
                 </div>
@@ -96,6 +100,6 @@
         </div>    
     </footer>
     <script type="module" src="scripts/theme-init.js"></script>
-    <script src="scripts/game.js"></script>
+    <script type="module" src="scripts/game.js"></script>
     </body>
 </html>

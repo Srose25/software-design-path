@@ -1,67 +1,84 @@
-/*Objects Needed
--Ship
--Meteor
--Bullet
+const SHIP_STATS = {
+    width: 32,
+    height: 32,
+    speed: 250,
+    fireRate: 200,   // ms between shots
+    sprite: "assets/images/sprites/spaceship.png"
+};
 
--Difficulty
--Hexadecimal
+const BULLET_STATS = {
+    width: 6,
+    height: 6,
+    speed: 500,
+    damage: 1,
+    sprite: "assets/images/sprites/bullet.png"
+};
 
--Music
--Sound Effects
-
--Sprites
-*/
-/*
-const GAME_STATS = [
-    {
-        name: SHIP,
-        speed: 250,
-        fireRate: 200,
+const METEOR_STATS = {
+    small: {
         width: 32,
-        height: 32
-    },
-    {
-        name: METEOR_SM,
-        speed: 200,
+        height: 32,
         hp: 2,
+        speed: 200,
         scoreValue: 100,
-        width: 32,
-        height: 32
+        sprite: "assets/images/sprites/meteor1.png"
     },
-    {
-        name: METEOR_ME,
-        speed: 100,
-        hp: 4,
-        scoreValue: 200,
+    medium: {
         width: 48,
-        height: 48
+        height: 48,
+        hp: 4,
+        speed: 100,
+        scoreValue: 200,
+        sprite: "assets/images/sprites/meteor2.png"
     },
-    {
-        name: METEOR_LA,
-        speed: 50,
-        hp: 8,
-        scoreValue: 500,
+    large: {
         width: 96,
-        height: 96
+        height: 96,
+        hp: 8,
+        speed: 50,
+        scoreValue: 500,
+        sprite: "assets/images/sprites/meteor3.png"
+    }
+};
+
+const DIFFICULTY = {
+    easy: {
+        spawnInterval: 1500,   // ms between meteor spawns
+        speedMultiplier: 1.0,
+        maxMeteors: 4,
+        distribution: { small: 0.7, medium: 0.25, large: 0.05 },
+        scoreMultiplier: 1
     },
-    {
-        name: BULLET,
-        speed: 500,
-        damage: 1,
-        width: 6,
-        height: 6
+    medium: {
+        spawnInterval: 1000,
+        speedMultiplier: 1.2,
+        maxMeteors: 8,
+        distribution: { small: 0.5, medium: 0.35, large: 0.15 },
+        scoreMultiplier: 1.2
+    },
+    hard: {
+        spawnInterval: 700,
+        speedMultiplier: 1.5,
+        maxMeteors: 12,
+        distribution: { small: 0.3, medium: 0.5, large: 0.2 },
+        scoreMultiplier: 1.5
     }
-];
-*/
-/*
-const DIFFICULTY = [
-    {
-        name: EASY
-        meteorSpawnRate: 
-        meteorSpeed:
+};
+
+const SOUNDS = {
+    music: {
+        cosmically: "assets/sounds/cosmically.mp3",
+        conquest: "assets/sounds/CONQUEST.mp3"
+    },
+    sfx: {
+        fire: "assets/sounds/fire.mp3",
+        hit: "assets/sounds/hit.mp3",
+        destroyed: "assets/sounds/destroyed.mp3",
+        gameover: "assets/sounds/game-over.mp3"
     }
-];//COME BACK TO THIS WHEN DESIGNING THE GAME
-*/
+};
+
+
 const THEMES = {
   light: {
     main: "#ffffff",
@@ -93,20 +110,13 @@ const THEMES = {
   }
 };
 
-/*
-const SOUNDS = [
-    {
-        name: cosmically
-        url: //something something
-    }
-];//IN A MINUTE!!!
 
-const SPRITES = [
-    {
-        name: SHIP
-        url:
-    }
-]; //WE GET THERE WHEN WE GET THERE
+export {
+    SHIP_STATS,
+    METEOR_STATS,
+    BULLET_STATS,
+    DIFFICULTY,
+    SOUNDS
+};
 
-*/
 export default THEMES;
