@@ -105,9 +105,9 @@ let lastShotTime = 0;
 // Load settings
 const settings = {
     musicVolume: parseFloat(localStorage.getItem("musicVolume")) || 0.5,
-    sfxVolume: parseFloat(localStorage.getItem("sfxVolume")) || 0.5,
-    difficulty: localStorage.getItem("difficulty") || "medium",
-    musicChoice: localStorage.getItem("musicChoice") || "conquest"
+    sfxVolume: parseFloat(localStorage.getItem("sfxVolume")) || 0.8,
+    difficulty: localStorage.getItem("difficulty") || "easy",
+    musicChoice: localStorage.getItem("musicChoice") || "cosmically"
 };
 
 //Start Game
