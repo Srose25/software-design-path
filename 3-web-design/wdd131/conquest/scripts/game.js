@@ -68,9 +68,35 @@ document.addEventListener("keydown", (e) => {
 //Start Game-
 //-----------
 
-import { gameState } from "./objects.mjs";
-import { SHIP_STATS, DIFFICULTY, SOUNDS } from "./objects.mjs";
+import { SHIP_STATS, BULLET_STATS, METEOR_STATS, DIFFICULTY, SOUNDS, gameState } from "./objects.mjs";
 import { startGameLoop } from "./game-loop.js";
+import { audioManager } from "./audio-manager.js";
+
+
+const IMAGES = {
+    ship: new Image(),
+    bullet: new Image(),
+    meteor1: new Image(),
+    meteor2: new Image(),
+    meteor3: new Image()
+}
+
+IMAGES.ship.src = SHIP_STATS.sprite;
+IMAGES.bullet.src = BULLET_STATS.sprite;
+IMAGES.meteor1.src = METEOR_STATS.small.sprite;
+IMAGES.meteor2.src = METEOR_STATS.medium.sprite;
+IMAGES.meteor3.src = METEOR_STATS.large.sprite;
+
+audioManager.load({
+    fire: SOUNDS.sfx.fire,
+    hit: SOUNDS.sfx.hit,
+    destroyed: SOUNDS.sfx.destroyed,
+    gameover: SOUNDS.sfx.gameover,
+
+    cosmically: SOUNDS.music.cosmically,
+    conquest: SOUNDS.music.conquest,
+    beyond: SOUNDS.music.beyond
+})
 
 let spawnTimer = 0;
 let timeSurvived = 0;
@@ -80,7 +106,8 @@ let lastShotTime = 0;
 const settings = {
     musicVolume: parseFloat(localStorage.getItem("musicVolume")) || 0.5,
     sfxVolume: parseFloat(localStorage.getItem("sfxVolume")) || 0.5,
-    difficulty: localStorage.getItem("difficulty") || "normal"
+    difficulty: localStorage.getItem("difficulty") || "medium",
+    musicChoice: localStorage.getItem("musicChoice") || "conquest"
 };
 
 //Start Game
@@ -107,9 +134,7 @@ function startGame() {
         //collisions
         checkCollisions();
 
-        if (playerDead) {
-            endGame();
-        }
+        if (gameState.gameOver) return;
     }
 
     function render() {
@@ -127,20 +152,29 @@ function startGame() {
     }
 
     //Load and apply settings
-    const settings = loadSettingsFromStorage();
     applyDifficulty(settings.difficulty);
     audioManager.setMusicVolume(settings.musicVolume);
     audioManager.setSfxVolume(settings.sfxVolume);
 
     //Reset game state
-    gameState.asteroids = [];
-    gameState.shots = [];
+    gameState.enemies = [];
+    gameState.bullets = [];
     gameState.score = 0;
-    gameState.timeElapsed = 0;
+    gameState.level = 1;
+    gameState.running = true;
     gameState.gameOver = false;
 
+    gameState.player = {
+    x: canvas.width / 2 - SHIP_STATS.width / 2,
+    y: canvas.height - SHIP_STATS.height - 20,
+    width: SHIP_STATS.width,
+    height: SHIP_STATS.height,
+    speed: SHIP_STATS.speed,
+    sprite: IMAGES.ship
+};
+
     //Start background music
-    audioManager.playBackgroundLoop(SOUNDS.music("conquest"));
+    audioManager.playBackgroundLoop(settings.musicChoice);
 
     //Start the game loop
     startGameLoop(update, render);
@@ -180,13 +214,25 @@ const keys = {
 document.addEventListener("keydown", (e) => {
     if (e.key === "ArrowLeft" || e.key === "a") keys.left = true;
     if (e.key === "ArrowRight" || e.key === "d") keys.right = true;
-    if (e.key === " " || e.key === "click") keys.shoot = true;
+    if (e.key === " ") keys.shoot = true;
 });
 
 document.addEventListener("keyup", (e) => {
     if (e.key === "ArrowLeft" || e.key === "a") keys.left = false;
     if (e.key === "ArrowRight" || e.key === "d") keys.right = false;
-    if (e.key === " " || e.key === "click") keys.shoot = false;
+    if (e.key === " ") keys.shoot = false;
+});
+
+document.addEventListener("mousedown", (e) => {
+    if (e.button === 0) {
+        keys.shoot = true;
+    }
+});
+
+document.addEventListener("mouseup", (e) => {
+    if (e.button === 0) {
+        keys.shoot = false;
+    }
 });
 
 
@@ -225,12 +271,13 @@ function fireBullet() {
         y: player.y,
         width: BULLET_STATS.width,
         height: BULLET_STATS.height,
-        speed: BULLET_STATS.speed
+        speed: BULLET_STATS.speed,
+        sprite: IMAGES.bullet
     };
 
     gameState.bullets.push(bullet);
 
-    audioManager.playSfx("fire.mp3");
+    audioManager.playSfx("fire");
 }
 
 
@@ -241,7 +288,6 @@ function spawnMeteors(deltaTime) {
     if (spawnTimer >= DIFFICULTY[settings.difficulty].spawnInterval) {
         spawnTimer = 0;
 
-        // Pick size based on distribution probability
         const dist = DIFFICULTY[settings.difficulty].distribution;
         const r = Math.random();
         let type = "small";
@@ -252,6 +298,11 @@ function spawnMeteors(deltaTime) {
 
         const data = METEOR_STATS[type];
 
+        const sprite =
+            type === "small"  ? IMAGES.meteor1 :
+            type === "medium" ? IMAGES.meteor2 :
+                                IMAGES.meteor3;
+
         const meteor = {
             type,
             x: Math.random() * (canvas.width - data.width),
@@ -259,27 +310,28 @@ function spawnMeteors(deltaTime) {
             width: data.width,
             height: data.height,
             hp: data.hp,
-            speed: data.speed * DIFFICULTY[settings.difficulty].speedMultiplier
+            speed: data.speed * DIFFICULTY[settings.difficulty].speedMultiplier,
+            sprite
         };
 
         gameState.enemies.push(meteor);
     }
 }
 
-function updateMeteors(deltaTime) {
 
+function updateMeteors(deltaTime) {
     for (let i = gameState.enemies.length - 1; i >= 0; i--) {
         const m = gameState.enemies[i];
 
         m.y += m.speed * deltaTime;
 
-        // If meteor passes bottom, end game
+        // Despawn if it goes off screen
         if (m.y > canvas.height) {
-            endGame();
-            return;
+            gameState.enemies.splice(i, 1);
         }
     }
 }
+
 
 
 //bullets
@@ -300,27 +352,40 @@ function updateBullets(deltaTime) {
 //collisions
 function checkCollisions() {
 
-    for (let i = gameState.enemies.length - 1; i >= 0; i--) {
+    const p = gameState.player;
+    if (!p) return;
 
+    for (let i = gameState.enemies.length - 1; i >= 0; i--) {
         const m = gameState.enemies[i];
 
-        // Check against bullets
-        for (let j = gameState.bullets.length - 1; j >= 0; j--) {
+        // --- Player vs Meteor ---
+        if (
+            p.x < m.x + m.width &&
+            p.x + p.width > m.x &&
+            p.y < m.y + m.height &&
+            p.y + p.height > m.y
+        ) {
+            endGame();
+            return;
+        }
 
+        // --- Bullet vs Meteor ---
+        for (let j = gameState.bullets.length - 1; j >= 0; j--) {
             const b = gameState.bullets[j];
 
-            if (b.x < m.x + m.width &&
+            if (
+                b.x < m.x + m.width &&
                 b.x + b.width > m.x &&
                 b.y < m.y + m.height &&
-                b.y + b.height > m.y) {
-
-                // Hit detected
+                b.y + b.height > m.y
+            ) {
+                audioManager.playSfx("hit");
                 m.hp -= BULLET_STATS.damage;
-                gameState.bullets.splice(j, 1); // remove bullet
+                gameState.bullets.splice(j, 1);
 
                 if (m.hp <= 0) {
+                    audioManager.playSfx("destroyed");
                     gameState.score += METEOR_STATS[m.type].scoreValue;
-                    // audioManager.playSfx("destroyed");
                     gameState.enemies.splice(i, 1);
                 }
 
@@ -336,11 +401,11 @@ function endGame() {
     console.log("GAME OVER");
     gameState.running = false;
     gameState.gameOver = true;
+    audioManager.stopMusic();
 
-    audioManager.playSfx("game-over.mp3");
+    audioManager.playSfx("gameover");
 
-    // Optional: show restart overlay
-    overlay.style.display = "block";
+    overlay.style.display = "flex";
 }
 
 
@@ -351,20 +416,23 @@ function endGame() {
 //player
 function renderPlayer() {
     const p = gameState.player;
+    if (!p || !p.sprite.complete) return;
+
     gameCtx.drawImage(p.sprite, p.x, p.y, p.width, p.height);
 }
 
 //bullets
 function renderBullets() {
     gameState.bullets.forEach(b => {
-        gameCtx.fillStyle = "white";
-        gameCtx.fillRect(b.x, b.y, b.width, b.height);
+        if (!b.sprite.complete) return;
+        gameCtx.drawImage(b.sprite, b.x, b.y, b.width, b.height);
     });
 }
 
 //meteors
 function renderMeteors() {
     gameState.enemies.forEach(m => {
+        if (!m.sprite.complete) return;
         gameCtx.drawImage(m.sprite, m.x, m.y, m.width, m.height);
     });
 }

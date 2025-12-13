@@ -114,9 +114,10 @@ const THEMES = {
 
 export const gameState = {
     player: null,
-    asteroids: [],
-    shots: [],
+    enemies: [],
+    bullets: [],
     score: 0,
+    level: 1,
     running: true,
 };
 

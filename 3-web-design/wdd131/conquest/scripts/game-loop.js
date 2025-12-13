@@ -1,3 +1,5 @@
+import { gameState } from "./objects.mjs"
+
 export function startGameLoop(update, render) {
     let lastTime = performance.now();
 
