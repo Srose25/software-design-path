@@ -94,12 +94,11 @@ audioManager.load({
     gameover: SOUNDS.sfx.gameover,
 
     cosmically: SOUNDS.music.cosmically,
-    conquest: SOUNDS.music.conquest,
-    beyond: SOUNDS.music.beyond
+    beyond: SOUNDS.music.beyond,
+    conquest: SOUNDS.music.conquest
 })
 
 let spawnTimer = 0;
-let timeSurvived = 0;
 let lastShotTime = 0;
 
 // Load settings
